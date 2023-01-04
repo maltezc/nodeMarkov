@@ -1,3 +1,5 @@
+"use strict";
+
 /** Textual markov chain generator. */
 
 class MarkovMachine {
@@ -25,19 +27,22 @@ class MarkovMachine {
    * */
 
   getChains() {
-    // // TODO: implement this!
     // initialize object
     let map = {};
+
+    for (let word of this.words) {
+      map[word] = []
+    }
 
     // for loop word in words
     for (let index = 0; index < this.words.length; index++) {
       const word = this.words[index];
+      const nextWord = this.words[index + 1];
 
-      // if word + 1 == undefined,
-      if (this.words[index + 1] !== undefined) {
+      if (nextWord !== undefined) {
+        map[word].push(nextWord)
         // set key as word.
         // set value as word index + 1
-        map[word] = [this.words[index + 1]];
         // push word as key and null as word + 1
       } else {
         map[word] = [null];
@@ -46,26 +51,33 @@ class MarkovMachine {
     return map;
   }
 
+  getIndex(keyword) {
+    return Math.floor(
+      Math.random() * this.chains[keyword].length);
+  }
+
   /** Return random text from chains, starting at the first word and continuing
    *  until it hits a null choice. */
 
   getText() {
-    // TODO: implement this!
-    const firstWord = this.words[0]
+    let currWord = this.words[0];
     // - start at the first word in the input text
-    let sentenceList = [firstWord];
+    let sentenceList = [currWord];
 
-    while ()
-    // - find a random word from the following-words of that
-      const randomIndexInRow = Math.floor(Math.random() * this.chains[firstWord].length);
-      const randomWord = this.chains[firstWord][randomIndexInRow];
-      sentenceList.push(randomWord)
-
+    while (currWord !== null) {
+      // - find a random word from the following-words of that
+      const randomIndex = this.getIndex(currWord);
+      currWord = this.chains[currWord][randomIndex]
+      sentenceList.push(currWord);
     }
 
-    // - repeat until reaching the terminal null
+    return sentenceList.join(" ");
   }
 }
 
-const catInHatMachine = new MarkovMachine("the cat in the hat");
+
+
+const catInHatMachine = new MarkovMachine("the cat in the hat and the quick" +
+  "brown fox jumps over the lazy dog");
 console.log(catInHatMachine.chains);
+console.log(catInHatMachine.getText())
