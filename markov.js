@@ -28,24 +28,32 @@ class MarkovMachine {
 
   getChains() {
     // initialize object
-    let map = {};
+    // let map = {};
+    const map = new Map();
 
-    for (let word of this.words) {
-      map[word] = []
-    }
 
+    // for (let word of this.words) {
+    //   map[word] = []
+    // }
+    debugger;
     // for loop word in words
     for (let index = 0; index < this.words.length; index++) {
       const word = this.words[index];
-      const nextWord = this.words[index + 1];
+      const nextWord = this.words[index + 1] || null;
 
-      if (nextWord !== undefined) {
-        map[word].push(nextWord)
+
+      if (map.has(word)) {
+      // if (word in map) {
+        // map[word].push(nextWord)
+        const wordList = map.get(word)
+        wordList.push(nextWord)
         // set key as word.
         // set value as word index + 1
         // push word as key and null as word + 1
       } else {
-        map[word] = [null];
+        // map[word] = [null];
+        map.set(word, [nextWord])
+
       }
     }
     return map;
@@ -53,7 +61,7 @@ class MarkovMachine {
 
   getIndex(keyword) {
     return Math.floor(
-      Math.random() * this.chains[keyword].length);
+      Math.random() * this.chains.get(keyword).length);
   }
 
   /** Return random text from chains, starting at the first word and continuing
@@ -67,7 +75,7 @@ class MarkovMachine {
     while (currWord !== null) {
       // - find a random word from the following-words of that
       const randomIndex = this.getIndex(currWord);
-      currWord = this.chains[currWord][randomIndex]
+      currWord = this.chains.get(currWord)[randomIndex]
       sentenceList.push(currWord);
     }
 
