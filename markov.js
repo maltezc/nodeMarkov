@@ -28,13 +28,8 @@ class MarkovMachine {
 
   getChains() {
     // initialize object
-    // let map = {};
     const map = new Map();
 
-
-    // for (let word of this.words) {
-    //   map[word] = []
-    // }
     debugger;
     // for loop word in words
     for (let index = 0; index < this.words.length; index++) {
@@ -43,17 +38,13 @@ class MarkovMachine {
 
 
       if (map.has(word)) {
-      // if (word in map) {
-        // map[word].push(nextWord)
         const wordList = map.get(word)
         wordList.push(nextWord)
         // set key as word.
         // set value as word index + 1
         // push word as key and null as word + 1
       } else {
-        // map[word] = [null];
         map.set(word, [nextWord])
-
       }
     }
     return map;
@@ -83,9 +74,9 @@ class MarkovMachine {
   }
 }
 
-
-
 const catInHatMachine = new MarkovMachine("the cat in the hat and the quick" +
   "brown fox jumps over the lazy dog");
 console.log(catInHatMachine.chains);
 console.log(catInHatMachine.getText())
+
+module.exports = { MarkovMachine }
