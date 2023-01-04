@@ -70,7 +70,7 @@ class MarkovMachine {
       sentenceList.push(currWord);
     }
 
-    return sentenceList.join(" ");
+    return sentenceList.join(" ").trim();
   }
 }
 
